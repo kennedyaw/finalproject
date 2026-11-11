@@ -1,0 +1,20 @@
+# Render Blueprint: New > Blueprint in the Render dashboard, pick this repo.
+services:
+  - type: web
+    name: asteroid-tracker
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    # One worker keeps the free instance's memory low and means only one
+    # process refreshes from NASA at a time.
+    startCommand: gunicorn app:app --workers 1 --threads 4 --timeout 60
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.7"
+      - key: NASA_API_KEY
+        sync: false   # you paste the value in the Render dashboard
+      - key: DATABASE_URL
+        sync: false   # Supabase connection string
+      - key: CACHE_TTL_HOURS
+        value: "6"

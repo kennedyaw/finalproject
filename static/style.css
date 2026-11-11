@@ -1,0 +1,170 @@
+/* Near-Earth Asteroid Tracker — light, simple, a little whimsical.
+   Cream paper, soft pastel cards, pill buttons, and coral reserved
+   for potentially hazardous asteroids. */
+
+:root {
+  --serif: "Times New Roman", Times, serif;
+
+  --bg: #fbf6ee;          /* warm cream */
+  --card: #ffffff;
+  --ink: #2f2b45;         /* deep plum-ink text */
+  --muted: #7a7590;
+  --lavender: #e9e3fb;
+  --lavender-dark: #6b58c9;
+  --sky: #dcecfb;
+  --hazard: #c8553d;      /* coral, readable on cream and white */
+  --hazard-soft: #fde9e1; /* peach */
+
+  --radius: 18px;
+  --shadow: 0 2px 0 rgba(47, 43, 69, 0.06), 0 8px 24px rgba(47, 43, 69, 0.06);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--ink);
+  background-color: var(--bg);
+  /* a sprinkle of tiny dots, like a sky drawn on paper */
+  background-image: radial-gradient(rgba(107, 88, 201, 0.12) 1.2px, transparent 1.2px);
+  background-size: 28px 28px;
+}
+
+/* ---------------- Header ---------------- */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 2.25rem 1.5rem 0.5rem;
+}
+.brand::before {
+  content: "☄ what's whooshing past Earth this week";
+  display: block;
+  color: var(--lavender-dark);
+  font-style: italic;
+  margin-bottom: 0.2rem;
+}
+.brand h1 { margin: 0; font-size: 2.5rem; font-weight: 700; line-height: 1.1; }
+.subtle { color: var(--muted); margin: 0.3rem 0 0; }
+.small { font-size: 0.9rem; }
+
+main { max-width: 1040px; margin: 0 auto; padding: 1rem 1.5rem 3rem; }
+
+/* ---------------- Hazardous-only toggle ---------------- */
+.toggle {
+  display: flex; align-items: center; gap: 0.6rem;
+  cursor: pointer; user-select: none;
+  background: var(--card); padding: 0.45rem 0.9rem 0.45rem 0.55rem;
+  border-radius: 999px; box-shadow: var(--shadow);
+}
+.toggle input { position: absolute; opacity: 0; }
+.track {
+  width: 42px; height: 24px; border-radius: 12px; background: #e4e0ee;
+  position: relative; transition: background 0.2s;
+}
+.track::after {
+  content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px;
+  border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+}
+.toggle input:checked + .track { background: var(--hazard); }
+.toggle input:checked + .track::after { transform: translateX(18px); }
+.toggle input:focus-visible + .track { outline: 2px solid var(--lavender-dark); outline-offset: 2px; }
+
+/* ---------------- Warning banner ---------------- */
+.banner {
+  max-width: 992px; margin: 1rem auto 0; padding: 0.75rem 1.1rem;
+  border-radius: var(--radius); background: var(--hazard-soft); color: var(--ink);
+}
+
+/* ---------------- List ---------------- */
+.list-head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+#count { color: var(--muted); }
+.legend { color: var(--muted); margin: 0; display: flex; align-items: center; gap: 0.4rem; }
+.swatch { width: 12px; height: 12px; border-radius: 50%; background: var(--hazard); display: inline-block; }
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+  margin: 0.5rem 0 2.5rem;
+}
+
+.date-heading {
+  grid-column: 1 / -1;
+  margin: 1.4rem 0 0;
+  font-size: 1.3rem; font-style: italic; font-weight: 700;
+}
+.date-heading::before { content: "✦ "; color: var(--lavender-dark); font-style: normal; }
+
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.2rem;
+  box-shadow: var(--shadow);
+  display: flex; flex-direction: column; gap: 0.3rem;
+  transition: transform 0.15s ease;
+}
+.card:hover { transform: rotate(-0.6deg) translateY(-2px); }
+.card.hazardous { background: var(--hazard-soft); }
+.card h3 { margin: 0 0 0.3rem; font-size: 1.25rem; }
+.card .row { display: flex; justify-content: space-between; gap: 0.5rem; font-size: 1rem; }
+.card .row span:first-child { color: var(--muted); }
+
+.badge {
+  align-self: flex-start; font-size: 0.85rem; font-weight: 700;
+  color: #fff; background: var(--hazard);
+  padding: 0.05rem 0.6rem; border-radius: 999px;
+}
+
+/* ---------------- Buttons and links ---------------- */
+button {
+  font-family: var(--serif); font-size: 1rem; font-weight: 700;
+  color: var(--lavender-dark); background: var(--lavender);
+  border: 0; border-radius: 999px;
+  padding: 0.45rem 1rem; margin-top: 0.6rem; cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+button:hover { background: var(--lavender-dark); color: #fff; }
+.card.hazardous button { color: var(--hazard); background: #fff; }
+.card.hazardous button:hover { background: var(--hazard); color: #fff; }
+
+.back { color: var(--lavender-dark); text-decoration: none; font-style: italic; display: inline-block; margin-bottom: 0.5rem; }
+.back:hover { text-decoration: underline; }
+button:focus-visible, .back:focus-visible { outline: 2px solid var(--lavender-dark); outline-offset: 2px; }
+
+/* ---------------- Panels and chart ---------------- */
+.chart-block, .chart-panel, .stats-panel {
+  background: var(--card); border-radius: var(--radius); padding: 1.3rem 1.4rem; box-shadow: var(--shadow);
+}
+.chart-block h2, .chart-panel h3 { margin: 0 0 0.25rem; font-size: 1.45rem; }
+.chart { width: 100%; min-height: 380px; }
+
+/* ---------------- Detail view ---------------- */
+.detail-grid { display: grid; grid-template-columns: minmax(260px, 1fr) 2fr; gap: 1rem; }
+.stats-panel h2 { margin: 0 0 0.4rem; font-size: 1.8rem; line-height: 1.15; }
+.stats { display: grid; grid-template-columns: auto 1fr; gap: 0.55rem 1rem; margin: 1rem 0; }
+.stats dt { color: var(--muted); }
+.stats dd { margin: 0; font-weight: 700; }
+.stats-panel a { color: var(--lavender-dark); }
+
+.empty { color: var(--muted); font-style: italic; grid-column: 1 / -1; padding: 2.5rem; text-align: center; }
+
+footer { text-align: center; padding: 1rem 1.5rem 2.5rem; }
+
+/* ---------------- Phones and narrow windows ---------------- */
+@media (max-width: 720px) {
+  body { font-size: 17px; }
+  .topbar { padding: 1.5rem 1rem 0.5rem; }
+  .brand h1 { font-size: 2rem; }
+  main { padding: 1rem; }
+  .detail-grid { grid-template-columns: 1fr; }
+  .chart { min-height: 320px; }
+}
